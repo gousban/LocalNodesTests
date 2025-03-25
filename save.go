@@ -10,13 +10,25 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"path/filepath"
 
 	"gopkg.in/yaml.v3"
 
 	"subs-check-custom/types"
 )
 
-func saveResults(cfg types.Config, nodes []types.Proxy) {
+func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
+	// For speed test (2) and both tests (3), only keep nodes with Speed > 0
+	if testChoice == "2" || testChoice == "3" {
+		speedPassedNodes := []types.Proxy{}
+		for _, node := range nodes {
+			if node.Speed > 0 {
+				speedPassedNodes = append(speedPassedNodes, node)
+			}
+		}
+		nodes = speedPassedNodes
+	}
+
 	sort.Slice(nodes, func(i, j int) bool {
 		if nodes[i].Speed == nodes[j].Speed {
 			return nodes[i].Name < nodes[j].Name
@@ -103,11 +115,33 @@ func saveResults(cfg types.Config, nodes []types.Proxy) {
 		log.Printf("Marshal failed: %v", err)
 		return
 	}
-	savePath := cfg.AllOutputFile
+
+	// Save to different files based on test choice
+	var savePath string
+	var saveDesc string
+	switch testChoice {
+	case "0":
+		savePath = "raw.yaml"
+		saveDesc = "Raw nodes (no test)"
+	case "1":
+		savePath = "tcp.yaml"
+		saveDesc = "TCP test passed nodes"
+	case "2":
+		savePath = "speed.yaml"
+		saveDesc = "Speed test passed nodes"
+	case "3":
+		savePath = "best.yaml"
+		saveDesc = "Both TCP and speed tests passed nodes"
+	default:
+		savePath = "raw.yaml"
+		saveDesc = "Raw nodes (no test)"
+	}
+
 	if err := os.WriteFile(savePath, file, 0644); err != nil {
 		log.Printf("Local save failed: %v", err)
 	} else {
-		log.Printf("Saved locally to %s", savePath)
+		absPath, _ := filepath.Abs(savePath)
+		fmt.Printf("\n✅ Saved %s to:\n   %s\n\n", saveDesc, absPath)
 	}
 
 	logMessage := fmt.Sprintf("Number of remaining nodes after removing duplicates: %d\n", len(uniqueNodes))

@@ -1,0 +1,93 @@
+{
+    "log": {
+      "loglevel": "debug",
+      "access": "./access.log",
+      "error": "./error.log"
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "ip": "127.0.0.1"
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls"]
+        }
+      },
+      {
+        "port": 10085,
+        "protocol": "dokodemo-door",
+        "settings": {
+          "address": "127.0.0.1",
+          "port": 10085,
+          "network": "tcp"
+        },
+        "tag": "api"
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {},
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "settings": {},
+        "tag": "blocked"
+      },
+      {
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "127.0.0.1",
+              "port": 443,
+              "users": [
+                {
+                  "id": "00000000-0000-0000-0000-000000000000",
+                  "encryption": "none"
+                }
+              ]
+            }
+          ]
+        },
+        "tag": "proxy"
+      }
+    ],
+    "stats": {},
+    "api": {
+      "tag": "api",
+      "services": [
+        "HandlerService",
+        "StatsService",
+        "ReflectionService"
+      ]
+    },
+    "policy": {
+      "levels": {
+        "0": {
+          "statsUserUplink": true,
+          "statsUserDownlink": true
+        }
+      },
+      "system": {
+        "statsInboundUplink": true,
+        "statsInboundDownlink": true
+      }
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "inboundTag": ["api"],
+          "outboundTag": "api"
+        }
+      ],
+      "domainStrategy": "AsIs"
+    }
+}

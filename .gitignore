@@ -1,0 +1,32 @@
+# Binaries and executables
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Generated YAML files
+raw.yaml
+tcp.yaml
+speed.yaml
+best.yaml
+all.yaml
+
+# Log files
+*.log
+*.txt
+
+# Go workspace file
+go.work
+
+# IDE specific files
+.idea
+.vscode
+*.swp
+*.swo
