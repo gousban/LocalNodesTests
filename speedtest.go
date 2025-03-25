@@ -89,7 +89,6 @@ func tcpTest(cfg types.Config, nodes []types.Proxy, testLogger *log.Logger) []ty
 		go func(n types.Proxy, nodeIndex int) {
 			defer wg.Done()
 
-			var lastErr error
 			for attempt := 0; attempt <= maxRetries; attempt++ {
 				ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.Timeout*2)*time.Millisecond) // Double the timeout
 				defer cancel()
@@ -120,13 +119,12 @@ func tcpTest(cfg types.Config, nodes []types.Proxy, testLogger *log.Logger) []ty
 				start := time.Now()
 				resp, err := client.Do(req)
 				if err != nil {
-					lastErr = err
-					testLogger.Printf("Node %d: Attempt %d failed - TCP test failed for %s (%v)", nodeIndex, attempt+1, n.Name, err)
+					testLogger.Printf("Node %d: Attempt %d failed - TCP test error for %s: %v", nodeIndex, attempt+1, n.Name, err)
 					if attempt < maxRetries {
 						time.Sleep(time.Second) // Wait 1 second before retrying
 						continue
 					}
-					testLogger.Printf("Node %d: Fail - TCP test failed for %s after %d attempts (%v)", nodeIndex, n.Name, maxRetries+1, lastErr)
+					testLogger.Printf("Node %d: Fail - TCP test failed for %s after %d attempts (%v)", nodeIndex, n.Name, maxRetries+1, err)
 					failedCount++
 					return
 				}
@@ -134,7 +132,6 @@ func tcpTest(cfg types.Config, nodes []types.Proxy, testLogger *log.Logger) []ty
 
 				// Check if response is successful (status 200)
 				if resp.StatusCode != http.StatusOK {
-					lastErr = fmt.Errorf("non-200 status: %d", resp.StatusCode)
 					testLogger.Printf("Node %d: Attempt %d failed - TCP test received non-200 status (%d) for %s", nodeIndex, attempt+1, resp.StatusCode, n.Name)
 					if attempt < maxRetries {
 						time.Sleep(time.Second)
