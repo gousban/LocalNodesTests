@@ -14,12 +14,14 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
-	// For speed test (2) and both tests (3), only keep nodes with Speed > 0
-	if testChoice == "2" || testChoice == "3" {
+	log.Printf("saveResults called with %d nodes", len(nodes))
+	// For speed test (2), only keep nodes with Speed > 0
+	// For both tests (3), keep nodes that passed TCP test (have latency) AND passed speed test (speed > 0)
+	if testChoice == "2" {
 		speedPassedNodes := []types.Proxy{}
 		for _, node := range nodes {
 			if node.Speed > 0 {
@@ -27,6 +29,17 @@ func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
 			}
 		}
 		nodes = speedPassedNodes
+		log.Printf("After speed filtering: %d nodes", len(nodes))
+	} else if testChoice == "3" {
+		// For both tests, keep nodes that passed speed test (speed > 0)
+		speedPassedNodes := []types.Proxy{}
+		for _, node := range nodes {
+			if node.Speed > 0 {
+				speedPassedNodes = append(speedPassedNodes, node)
+			}
+		}
+		nodes = speedPassedNodes
+		log.Printf("After speed filtering: %d nodes", len(nodes))
 	}
 
 	sort.Slice(nodes, func(i, j int) bool {
@@ -42,11 +55,13 @@ func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
 
 	for _, node := range nodes {
 		if node.Server == "" && node.Type != "No usable nodes" {
+			log.Printf("Skipping node with empty server: %+v", node)
 			continue
 		}
 
 		key := fmt.Sprintf("%s:%d", node.Server, node.Port)
 		if seen[key] && node.Type != "No usable nodes" {
+			log.Printf("Skipping duplicate node: %s", key)
 			continue
 		}
 		seen[key] = true
@@ -163,6 +178,7 @@ func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
 }
 
 func saveUniqueNodesToTxt(nodes []types.Proxy, filename string) error {
+	log.Printf("Saving %d nodes to %s", len(nodes), filename)
 	file, err := os.Create(filename)
 	if err != nil {
 		return err

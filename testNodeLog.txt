@@ -11,23 +11,23 @@ Node 4: Switching to 45.149.12.232:80 (14|NL_speednode_0034)
 Node 4: Running TCP test to https://www.apple.com/library/test/success.html (Name: 14|NL_speednode_0034)
 Node 5: Switching to 45.149.12.206:80 (14|NL_speednode_0038)
 Node 5: Running TCP test to https://www.apple.com/library/test/success.html (Name: 14|NL_speednode_0038)
-Node 4: Success - TCP test passed (794 ms) for 14|NL_speednode_0034
-Node 0: Success - TCP test passed (1773 ms) for 14|CH_speednode_0002
-Node 3: Success - TCP test passed (1147 ms) for 14|NL_speednode_0029
-Node 2: Success - TCP test passed (1579 ms) for 14|NL_speednode_0028
-Node 1: Success - TCP test passed (1706 ms) for 14|GB_speednode_0009
-Node 5: Success - TCP test passed (619 ms) for 14|NL_speednode_0038
+Node 5: Success - TCP test passed (344 ms) for 14|NL_speednode_0038
+Node 1: Success - TCP test passed (365 ms) for 14|GB_speednode_0009
+Node 3: Success - TCP test passed (358 ms) for 14|NL_speednode_0029
+Node 4: Success - TCP test passed (353 ms) for 14|NL_speednode_0034
+Node 0: Success - TCP test passed (367 ms) for 14|CH_speednode_0002
+Node 2: Success - TCP test passed (364 ms) for 14|NL_speednode_0028
 TCP Test - Total nodes: 6, Successful: 6, Failed: 0
 Node 0: Running speed test
 Node 1: Running speed test
 Node 2: Running speed test
 Node 3: Running speed test
 Node 4: Running speed test
-Node 1: Fail - Speed test timeout
-Node 2: Fail - Speed test read error (context deadline exceeded)
-Node 0: Fail - Speed test read error (context deadline exceeded)
+Node 3: Fail - Speed test timeout
 Node 4: Fail - Speed test read error (context deadline exceeded)
-Node 3: Fail - Speed test read error (context deadline exceeded)
+Node 0: Fail - Speed test read error (context deadline exceeded)
+Node 1: Fail - Speed test read error (context deadline exceeded)
+Node 2: Fail - Speed test read error (context deadline exceeded)
 Node 5: Running speed test
-Node 5: Success - Speed test passed (16790.7 KB/s)
+Node 5: Success - Speed test passed (17359.5 KB/s)
 Speed Test - Total nodes: 6, Successful: 1, Failed: 5

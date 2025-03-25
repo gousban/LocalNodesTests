@@ -14,7 +14,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 type crlfWriter struct {
@@ -28,13 +28,13 @@ func (w *crlfWriter) Write(p []byte) (n int, err error) {
 
 var xrayCmd *exec.Cmd
 
-func waitForXray(timeout time.Duration) error {
+func waitForXray(timeout time.Duration, apiAddr string) error {
 	start := time.Now()
 	for {
 		if time.Since(start) > timeout {
 			return fmt.Errorf("timeout waiting for xray to start")
 		}
-		conn, err := net.Dial("tcp", "127.0.0.1:10085")
+		conn, err := net.Dial("tcp", apiAddr)
 		if err == nil {
 			conn.Close()
 			return nil
@@ -43,24 +43,24 @@ func waitForXray(timeout time.Duration) error {
 	}
 }
 
-func startXray() error {
+func startXray(config types.Config) error {
 	// Get absolute path to xray directory
 	wd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get working directory: %v", err)
 	}
 	xrayPath := filepath.Join(wd, "xray", "xray.exe")
-	
+
 	xrayCmd = exec.Command(xrayPath, "-config", "config.json")
-	xrayCmd.Dir = filepath.Join(wd, "xray")  // Set working directory to xray folder
+	xrayCmd.Dir = filepath.Join(wd, "xray") // Set working directory to xray folder
 	xrayCmd.Stdout = os.Stdout
 	xrayCmd.Stderr = os.Stderr
 	if err := xrayCmd.Start(); err != nil {
 		return fmt.Errorf("failed to start xray: %v", err)
 	}
-	
+
 	// Wait for xray to be ready
-	if err := waitForXray(5 * time.Second); err != nil {
+	if err := waitForXray(5*time.Second, config.ApiAddr); err != nil {
 		stopXray()
 		return fmt.Errorf("xray failed to start: %v", err)
 	}
@@ -76,35 +76,12 @@ func stopXray() {
 func main() {
 
 	// Start xray
-	if err := startXray(); err != nil {
-		log.Fatalf("Failed to start xray: %v", err)
-	}
-	defer stopXray()
-
-	// Set up logging to runlog.txt
-	logFile, err := os.Create("runlog.txt")
-	if err != nil {
-		fmt.Printf("Failed to create runlog.txt: %v\n", err)
-		return
-	}
-	defer logFile.Close()
-	log.SetOutput(&crlfWriter{Writer: logFile})
-
-	// Set up simple logger to parsingLog.txt
-	simpleLogFile, err := os.Create("parsingLog.txt")
-	if err != nil {
-		log.Printf("Failed to create parsingLog.txt: %v", err)
-		return
-	}
-	defer simpleLogFile.Close()
-	simpleLogger := log.New(&crlfWriter{Writer: simpleLogFile}, "", 0)
-
+	var config types.Config
 	// Parse command-line flags
 	configFile := flag.String("config", "config.yaml", "Path to configuration file")
 	flag.Parse()
 
 	// Load configuration
-	var config types.Config
 	if _, err := os.Stat(*configFile); err == nil {
 		configData, err := os.ReadFile(*configFile)
 		if err != nil {
@@ -141,6 +118,29 @@ func main() {
 		config.GistID = gistID
 	}
 
+	if err := startXray(config); err != nil {
+		log.Fatalf("Failed to start xray: %v", err)
+	}
+	defer stopXray()
+
+	// Set up logging to runlog.txt
+	logFile, err := os.Create("runlog.txt")
+	if err != nil {
+		fmt.Printf("Failed to create runlog.txt: %v\n", err)
+		return
+	}
+	defer logFile.Close()
+	log.SetOutput(&crlfWriter{Writer: logFile})
+
+	// Set up simple logger to parsingLog.txt
+	simpleLogFile, err := os.Create("parsingLog.txt")
+	if err != nil {
+		log.Printf("Failed to create parsingLog.txt: %v", err)
+		return
+	}
+	defer simpleLogFile.Close()
+	simpleLogger := log.New(&crlfWriter{Writer: simpleLogFile}, "", 0)
+
 	// Progress update function
 	updateProgress := func(stageName string) {
 		fmt.Printf("\033[2K\rStage: %s\n", stageName)
@@ -150,7 +150,7 @@ func main() {
 	fmt.Println("There are 4 stages: Fetching, Parsing, Testing (optional), Saving")
 
 	// Prompt user for test selection with 5-second timeout
-	fmt.Print("Select test: (0) No test, (1) TCP test, (2) Download speed test, (3) Both [default 0 in 5s]: ")
+	fmt.Print("Select test: (0) No test, (1) TCP test, (2) Download speed test, (3) Both [default 0 in 10s]: ")
 	choiceChan := make(chan string, 1)
 	go func() {
 		var choice string
@@ -164,7 +164,7 @@ func main() {
 	select {
 	case choice := <-choiceChan:
 		testChoice = choice
-	case <-time.After(5 * time.Second):
+	case <-time.After(10 * time.Second):
 		testChoice = "0"
 		fmt.Println("\nDefaulting to (0) No test")
 	}

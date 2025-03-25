@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 // SSParseResult holds the parsed result of a Shadowsocks proxy

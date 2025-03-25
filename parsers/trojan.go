@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 // ParseTrojan parses a Trojan proxy URL

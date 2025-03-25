@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 // dialContextAdapter adapts a proxy.Dialer to a DialContext function

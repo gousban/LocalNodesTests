@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"subs-check-custom/types"
+	"LocalNodesTests/types"
 )
 
 // ParseVMess parses a VMess proxy URL

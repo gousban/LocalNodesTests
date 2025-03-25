@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"subs-check-custom/types" // Updated import
+	"LocalNodesTests/types" // Updated import
 )
 
 // ParseHysteria2 parses a Hysteria2 proxy URL

@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"subs-check-custom/parsers"
-	"subs-check-custom/types"
+	"LocalNodesTests/parsers"
+	"LocalNodesTests/types"
 )
 
 func fetchContent(config types.Config, updateProgress func(string)) (string, error) {

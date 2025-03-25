@@ -1,1 +1,1 @@
-vless://e497da22-d020-40fb-a1fa-bc294066a2d2@45.149.12.206:80?host=pormang.webhost99.workers.dev&path=%2F%40AZARBAYJAB1%40AZARBAYJAB1%40AZARBAYJAB1%2314%257CNL_speednode_0038&sni=pormang.webhost99.workers.dev&type=ws#14+%7C+%E2%AC%87%EF%B8%8F+16.4MB%2Fs
+vless://e497da22-d020-40fb-a1fa-bc294066a2d2@45.149.12.128:80?host=pormang.webhost99.workers.dev&path=%2F%3Fed%3D2560%2314%257CNL_speednode_0028&sni=pormang.webhost99.workers.dev&type=ws#14+%7C+%E2%AC%87%EF%B8%8F+17.0MB%2Fs
