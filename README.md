@@ -18,7 +18,7 @@ A Go program to test and validate proxy nodes using Xray-core. The program perfo
 1. Make sure you have Xray-core installed
 2. Run the program:
    ```bash
-   ./subs-check-custom
+   ./LocalNodesTests
    ```
 3. Select a test mode:
    - 0: No test (saves all nodes to raw.yaml)
