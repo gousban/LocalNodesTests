@@ -5,9 +5,7 @@ concurrent: 5
 timeout: 15000  
 min-speed: 256
 save-method: local
-proxyAddr: "127.0.0.1:10808" # Customize this as needed
 api-addr: "127.0.0.1:10085"  # Xray's API address and port
-allOutputFile: "all.yaml"          # Customizable output file for YAML
 uniqueNodesFile: "uniqueNodes.txt" # Customizable output file for unique nodes
 
 # Add your subscription URLs here
