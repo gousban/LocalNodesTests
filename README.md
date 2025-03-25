@@ -1,6 +1,6 @@
-# Subs Check Custom
+# LocalNodesTests
 
-A Go program to test and validate proxy nodes using Xray-core. The program performs TCP and speed tests on nodes and saves the results in YAML format.
+A Go program to test and validate proxy nodes using Xray-core. The program performs TCP and speed tests on nodes and saves the results in YAML format.  Idea based on [subs-check](https://github.com/bestruirui/BestSub)
 
 ## Features
 
@@ -12,15 +12,16 @@ A Go program to test and validate proxy nodes using Xray-core. The program perfo
 - Automatic node deduplication
 - Configurable test parameters
 - YAML output compatible with common proxy clients
+- Xray is included
+- Supports vless, vmess, trojan, shadowsocks, hysteria2
 
 ## Usage
 
-1. Make sure you have Xray-core installed
-2. Run the program:
+1. Run the program:
    ```bash
-   ./subs-check-custom
+   ./LocalNodesTests
    ```
-3. Select a test mode:
+2. Select a test mode:
    - 0: No test (saves all nodes to raw.yaml)
    - 1: TCP test (saves passing nodes to tcp.yaml)
    - 2: Speed test (saves passing nodes to speed.yaml)
