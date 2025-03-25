@@ -1,0 +1,15 @@
+tcp-test-url: https://www.apple.com/library/test/success.html
+tcp-test-max-speed: 3000 # in ms
+speed-test-url: https://speed.cloudflare.com/__down?bytes=10485760
+concurrent: 5
+timeout: 15000  
+min-speed: 256
+save-method: local
+proxyAddr: "127.0.0.1:10808" # Customize this as needed
+api-addr: "127.0.0.1:10085"  # Xray's API address and port
+allOutputFile: "all.yaml"          # Customizable output file for YAML
+uniqueNodesFile: "uniqueNodes.txt" # Customizable output file for unique nodes
+
+# Add your subscription URLs here
+sub-urls:
+  - https://example.com/your-subscription-url
