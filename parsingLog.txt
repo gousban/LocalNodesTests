@@ -17,4 +17,4 @@ Trojan Success: 0, Trojan Fail: 0
 Hysteria2 Success: 0, Hysteria2 Fail: 0
 VLess Success: 10, VLess Fail: 0
 --- Parsing Results ---
-Number of remaining nodes after removing duplicates: 1
+Number of remaining nodes after removing duplicates: 6

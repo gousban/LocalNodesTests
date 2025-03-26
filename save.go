@@ -137,19 +137,19 @@ func saveResults(cfg types.Config, nodes []types.Proxy, testChoice string) {
 	switch testChoice {
 	case "0":
 		savePath = "raw.yaml"
-		saveDesc = "Raw nodes (no test)"
+		saveDesc = fmt.Sprintf("Raw nodes (no test) - %d nodes", len(uniqueNodes))
 	case "1":
 		savePath = "tcp.yaml"
-		saveDesc = "TCP test passed nodes"
+		saveDesc = fmt.Sprintf("TCP test passed nodes - %d nodes", len(uniqueNodes))
 	case "2":
 		savePath = "speed.yaml"
-		saveDesc = "Speed test passed nodes"
+		saveDesc = fmt.Sprintf("Speed test passed nodes - %d nodes", len(uniqueNodes))
 	case "3":
 		savePath = "best.yaml"
-		saveDesc = "Both TCP and speed tests passed nodes"
+		saveDesc = fmt.Sprintf("Both TCP and speed tests passed nodes - %d nodes", len(uniqueNodes))
 	default:
 		savePath = "raw.yaml"
-		saveDesc = "Raw nodes (no test)"
+		saveDesc = fmt.Sprintf("Raw nodes (no test) - %d nodes", len(uniqueNodes))
 	}
 
 	if err := os.WriteFile(savePath, file, 0644); err != nil {
