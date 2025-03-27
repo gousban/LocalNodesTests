@@ -1,3 +1,5 @@
+Failed project.  Use cmliu's subs-check.win.gui instead.  Archived.
+
 # LocalNodesTests
 
 A Go program to test and validate proxy nodes using Xray-core. The program performs TCP and speed tests on nodes and saves the results in YAML format.  Idea based on [subs-check](https://github.com/bestruirui/BestSub)
